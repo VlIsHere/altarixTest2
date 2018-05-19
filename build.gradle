@@ -28,5 +28,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	// https://mvnrepository.com/artifact/org.mybatis/mybatis
 	compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'
+	// https://mvnrepository.com/artifact/postgresql/postgresql
+	compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

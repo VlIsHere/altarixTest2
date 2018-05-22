@@ -19,6 +19,8 @@ public class Employee implements Domain {
     private int salary;
     private boolean isChief;
 
+    public Employee(){}
+
     private Employee(EmployeeBuilder empBuilder) {
         this.idEmployee = empBuilder.idEmployee;
         this.idDepartment = empBuilder.idDepartment;

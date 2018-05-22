@@ -1,0 +1,50 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.altarix.artifacttest2.mappers.EmployeeMapper">
+    <resultMap id="employee" type="Employee">
+        <id property="idEmployee" column="idemployee"/>
+        <result property="idDepartment" column="iddepartment"/>
+        <result property="idPosition" column="idposition"/>
+        <result property="idCompany" column="idcompany"/>
+        <result property="surname" column="surname"/>
+        <result property="name" column="name"/>
+        <result property="patronymic" column="patronymic"/>
+        <result property="sex" column="sex"/>
+        <result property="dateBirth" column="datebirth"/>
+        <result property="phoneNumber" column="phonenumber"/>
+        <result property="email" column="email"/>
+        <result property="employmentDate" column="employmentdate"/>
+        <result property="dateofDismissal" column="dateofdismissal"/>
+        <result property="salary" column="salary"/>
+        <result property="isChief" column="ischief"/>
+    </resultMap>
+    <select resultMap="employee" id="getAll">select * from Employee;</select>
+
+    <select resultMap="employee" id="getByID" parameterType="long" >
+            select * from Employee where  idemployee = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Employee">
+        insert into employee(idemployee, iddepartment, idposition, idcompany,
+         surname, name, patronymic, sex, datebirth, phonenumber, email, employmentdate, dateofdismissal,
+         salary, ischief) values (#{employee.idemployee}, #{employee.iddepartment}, #{employee.idposition},
+          #{employee.idcompany}, #{employee.surname}, #{employee.name}, #{employee.patronymic},
+          #{employee.sex}, #{employee.datebirth}, #{employee.phonenumber},#{employee.email},
+          #{employee.employmentdate},#{employee.dateofdismissal}, #{employee.salary},#{employee.ischief});
+    </insert>
+
+    <update id="update" parameterType="Employee">
+        update employee set idemployee = #{employee.idemployee}, iddepartment = #{employee.iddepartment},
+         idposition = #{employee.idposition}, idcompany = #{employee.idcompany}, surname = #{employee.surname},
+          name =#{employee.name}, patronymic =#{employee.patronymic},sex =#{employee.sex},
+          datebirth = #{employee.datebirth}, phonenumber= #{employee.phonenumber},email =#{employee.email},
+          employmentdate=#{employee.employmentdate},dateofdismissal =#{employee.dateofdismissal},
+          salary =#{employee.salary},ischief =#{employee.ischief};
+          where idemployee = #{idOld}
+    </update>
+
+    <delete id="delete" parameterType="long">delete from employee where  = #{id}</delete>
+
+    <delete id="deleteAll">delete from employee</delete>
+</mapper>

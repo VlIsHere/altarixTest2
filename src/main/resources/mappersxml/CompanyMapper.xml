@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.altarix.artifacttest2.mappers.CompanyMapper">
+
+    <resultMap id="Comp" type="Company">
+        <id property="idCompany" column="idCompany"/>
+        <result property="nameCompany" column="namecompany"/>
+    </resultMap>
+    <select resultMap="Comp" id="getAll">select * from company;</select>
+
+    <select resultMap="Comp" id="getByID" parameterType="long" >
+            select * from company where company.idcompany= #{id}
+    </select>
+
+    <insert id="insert" parameterType="Company">
+        insert into company(idcompany, namecompany) values (#{company.idCompany}, #{company.nameCompany});
+    </insert>
+
+    <update id="update" parameterType="Company">
+        update company set idcompany = #{companyNew.idCompany}, namecompany = #{companyNew.nameCompany}
+          where idcompany = #{idOld}
+    </update>
+
+    <delete id="delete" parameterType="long">delete from company where idcompany = #{id}</delete>
+
+    <delete id="deleteAll">delete from company</delete>
+</mapper>

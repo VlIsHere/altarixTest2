@@ -1,4 +1,4 @@
-package com.altarix.artifacttest2.Services;
+package com.altarix.artifacttest2.services;
 
 import javax.websocket.Session;
 

@@ -4,6 +4,8 @@ public class Company implements Domain {
     private long idCompany;
     private String nameCompany;
 
+    public Company(){}
+
     public long getIdCompany() {
         return idCompany;
     }

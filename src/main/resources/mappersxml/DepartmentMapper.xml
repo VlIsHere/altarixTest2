@@ -17,15 +17,13 @@
     </select>
 
     <insert id="insert" parameterType="Department">
-        insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment)
-	      values (#{department.iddepartment},#{department.idcompany},#{department.dateofcreating},
-	             #{department.namedepartment},#{department.idrootdepartment});
+        insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment) values (#{department.idDepartment},#{department.idCompany},#{department.dateOfCreating},#{department.nameDepartment},#{department.idRootDepartment});
     </insert>
 
     <update id="update" parameterType="Department">
         update department set iddepartment = #{departmentNew.idDepartment}, idcompany = #{companyNew.idCompany},
             dateofcreating = #{departmentNew.dateOfCreating}, namedepartment = #{departmentNew.nameDepartment},
-            idrootdepartment = #{departmentNew.idrootdepartment}
+            idrootdepartment = #{departmentNew.idRootDepartment}
           where iddepartment = #{idOld}
     </update>
 

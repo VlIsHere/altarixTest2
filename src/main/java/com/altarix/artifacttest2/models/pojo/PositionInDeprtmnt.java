@@ -1,11 +1,12 @@
-package com.altarix.artifacttest2.models.domains;
+package com.altarix.artifacttest2.models.pojo;
 
 
-public class PositionInDeprtmnt {
+public class PositionInDeprtmnt implements Domain{
     private long idPosition;
     private String namePosition;
 
-    public long getIdPosition() {
+    @Override
+    public long getId() {
         return idPosition;
     }
 

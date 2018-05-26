@@ -1,10 +1,10 @@
-package com.altarix.artifacttest2.mappers;
+package com.altarix.artifacttest2.dao;
 
 
-import com.altarix.artifacttest2.models.domains.Company;
+import com.altarix.artifacttest2.models.pojo.Company;
 import org.apache.ibatis.annotations.Param;
 
-public interface CompanyMapper extends Mapper {
+public interface CompanyDAO extends DAO {
 
     boolean insert(@Param("company")Company company);
 

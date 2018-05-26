@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableAutoConfiguration
-@MapperScan("com.altarix.artifacttest2.mappers")
+@MapperScan("com.altarix.artifacttest2.dao")
 public class DataConfig {
     @Autowired
     private DataSource dataSource;
@@ -28,7 +28,7 @@ public class DataConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setTypeAliasesPackage("com/altarix/artifacttest2/models");
+        sessionFactory.setTypeAliasesPackage("com/altarix/artifacttest2/models/pojo");
         sessionFactory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
         return sessionFactory.getObject();
     }

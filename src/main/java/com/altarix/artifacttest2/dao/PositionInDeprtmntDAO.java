@@ -1,9 +1,9 @@
-package com.altarix.artifacttest2.mappers;
+package com.altarix.artifacttest2.dao;
 
-import com.altarix.artifacttest2.models.domains.PositionInDeprtmnt;
+import com.altarix.artifacttest2.models.pojo.PositionInDeprtmnt;
 import org.apache.ibatis.annotations.Param;
 
-public interface PositionInDeprtmntMapper extends Mapper {
+public interface PositionInDeprtmntDAO extends DAO {
     boolean insert(@Param("posInDeprtmnt") PositionInDeprtmnt posInDeprtmnt);
 
     boolean update(@Param("idOld") long id, @Param("posInDeprtmnt") PositionInDeprtmnt posInDeprtmnt);

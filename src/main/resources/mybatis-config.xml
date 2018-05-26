@@ -3,13 +3,13 @@
 <configuration>
 
     <!--<typeAliases>-->
-        <!--<typeAlias alias="CompanyMapper" type="com.altarix.artifacttest2.daopanyMapper"/>-->
+        <!--<typeAlias alias="CompanyDAO" type="com.altarix.artifacttest2.daopanyMapper"/>-->
     <!--</typeAliases>-->
     <typeAliases>
-    <typeAlias type="com.altarix.artifacttest2.models.domains.Company" alias="Company"/>
-    <typeAlias type="com.altarix.artifacttest2.models.domains.Department" alias="Department"/>
-    <typeAlias type="com.altarix.artifacttest2.models.domains.Employee" alias="Employee"/>
-    <typeAlias type="com.altarix.artifacttest2.models.domains.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
+    <typeAlias type="com.altarix.artifacttest2.models.pojo.Company" alias="Company"/>
+    <typeAlias type="com.altarix.artifacttest2.models.pojo.Department" alias="Department"/>
+    <typeAlias type="com.altarix.artifacttest2.models.pojo.Employee" alias="Employee"/>
+    <typeAlias type="com.altarix.artifacttest2.models.pojo.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
     </typeAliases>
 
     <environments default="development">

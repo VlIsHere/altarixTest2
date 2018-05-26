@@ -32,7 +32,7 @@ public class Checker {
      * @throws InvalidDateException
      */
     public static void checkDate(Date date,Date currDate) throws InvalidDateException {
-       if (currDate.compareTo(date)<0) throw new InvalidDateException();//дата должна меньше настоящей!
+        if (currDate.compareTo(date) < 0) throw new InvalidDateException();//дата должна меньше настоящей!
     }
 
     public static void checkEmail(String email) throws InvalidEmailException {

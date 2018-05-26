@@ -1,4 +1,4 @@
-package com.altarix.artifacttest2.models.domains;
+package com.altarix.artifacttest2.models.pojo;
 
 import java.sql.Date;
 
@@ -17,7 +17,8 @@ public class Department implements Domain {
         this.idRootDepartment = idRootDepartment;
     }
 
-    public long getIdDepartment() {
+    @Override
+    public long getId() {
         return idDepartment;
     }
 
@@ -48,4 +49,5 @@ public class Department implements Domain {
     public void setNameDepartment(String nameDepartment) {
         this.nameDepartment = nameDepartment;
     }
+
 }

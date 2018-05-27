@@ -282,6 +282,7 @@ public class SQLService {
             session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
+        return employee.getId();
     }
 
 //for getAncestors

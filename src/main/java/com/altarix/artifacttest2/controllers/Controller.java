@@ -2,15 +2,20 @@ package com.altarix.artifacttest2.controllers;
 
 
 import com.altarix.artifacttest2.json.response.DepartmentInfo;
-import com.altarix.artifacttest2.models.pojo.Company;
 import com.altarix.artifacttest2.models.pojo.Department;
 import com.altarix.artifacttest2.models.pojo.Employee;
 import com.altarix.artifacttest2.services.SQLService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import java.sql.Date;
 import java.util.List;
 
+@Api(value = "Company", description = "APIs for working with db company")
 @RestController
 @RequestMapping(value = "/sqlQueries") //, consumes = "application/json"
 public class Controller {
@@ -24,6 +29,9 @@ public class Controller {
     //Создание департамента. При создании департамента нужно указать информацию о департаменте, в который он
     //будет входить. Для самого верхнего департамента такой информации указывать не нужно.
     //инфа о департаменте, в который будет входить новый деп-нт, содержится в поле idrootDepartment
+    @Path("login")
+    @PUT
+    @ApiOperation(value = "insertDeprtmnt")
     @PutMapping("/d1/")
     public long insertDeprtmnt(@RequestBody Department department){
         return sqlService.createDepartment(department);
@@ -100,28 +108,46 @@ public class Controller {
     }
 
 //		Редактирование сведений о сотруднике департамента.
-//		Увольнение сотрудника с указанием даты увольнения.
-//		Получение информации о сотруднике.
-//		Перевод сотрудника из одного департамента в другой.
-//		Перевод всех сотрудников департамента в другой департамент.
-//		Получение информации о руководителе данного сотрудника.
-//		Поиск сотрудников по атрибутам (по каким – решить самостоятельно).
+    @PatchMapping("/d13/")
+    public long updateEmployee(@RequestBody Employee employee){
+        return sqlService.changeEmployee(employee);
+    }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<Company> selectEmpl(){
-//        CompanyDAO companyMapper;
-//        SqlSessionFactory sqlSessionFactory;
-//        Reader reader = null;
-//        List<Company> companies = null;
-//        try {
-//            reader = Resources.getResourceAsReader("mybatis-config.xml");
-//            sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
-//            companyMapper = sqlSessionFactory.openSession().getMapper(CompanyDAO.class);
-//            companies = companyMapper.getAll();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return  companies;
-        return null;
+    //		Увольнение сотрудника с указанием даты увольнения.
+    @PatchMapping("/d14/{id}/{dateDismis}")
+    public long updateEmployee(@PathVariable(value = "id")long id,@PathVariable(value = "dateDismis")Date dateDismis){
+        return sqlService.dismisEmployee(id,dateDismis);
+    }
+
+//		Получение информации о сотруднике.
+    @GetMapping(value = "/d15/{id}", produces = "application/json")
+    public Employee getEmployee(@PathVariable(value = "id") long id) {
+        return sqlService.getEmployee(id);
+    }
+
+//	Перевод сотрудника из одного департамента в другой.
+    @PatchMapping("/d16/{idEmp}/{idNewDep}")
+    public boolean updateEmployee(@PathVariable(value = "idEmp") long idEmp,
+                                  @PathVariable(value = "idNewDep")long idNewDep){
+        return sqlService.transferEmployee(idEmp,idNewDep);
+    }
+
+//		Перевод всех сотрудников департамента в другой департамент.
+    @PatchMapping("/d17/{idOldDep}/{idNewDep}")
+    public boolean updateEmployees(@PathVariable(value = "idOldDep") long idOldDep,
+                                   @PathVariable(value = "idNewDep") long idNewDep){
+        return sqlService.transferEmployees(idOldDep,idNewDep);
+    }
+
+//		Получение информации о руководителе данного сотрудника.
+    @GetMapping(value = "/d18/{id}", produces = "application/json")
+    public Employee getBoss(@PathVariable(value = "id") long id) {
+        return sqlService.getBossOfEmployee(id);
+    }
+
+//    		Поиск сотрудников по атрибутам (по каким – решить самостоятельно).
+    @GetMapping(value = "/d19/{sex}", produces = "application/json")
+    public List<Employee> getContactEmpls(@PathVariable(value = "sex") String sex) {
+        return sqlService.getContactEmplsData(sex.toUpperCase());
     }
 }

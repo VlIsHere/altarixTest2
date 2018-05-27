@@ -4,9 +4,10 @@
 <mapper namespace="com.altarix.artifacttest2.dao.CompanyDAO">
 
     <resultMap id="Comp" type="Company">
-        <id property="idCompany" column="idCompany"/>
+        <id property="idCompany" column="idcompany"/>
         <result property="nameCompany" column="namecompany"/>
     </resultMap>
+
     <select resultMap="Comp" id="getAll">select * from company;</select>
 
     <select resultMap="Comp" id="getByID" parameterType="long" >

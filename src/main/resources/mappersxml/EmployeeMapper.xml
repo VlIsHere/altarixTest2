@@ -30,7 +30,7 @@
     </select>
 
     <select resultMap="employee" id="getBossOfDep" parameterType="long">
-        select * from employee where iddepartment = #{idDep} and employee.ischief;
+        select * from employee where iddepartment = #{idDep} and ischief and dateOfDismissal is null;
     </select>
     
     <select id="getCntEmplByDep" resultType="java.lang.Integer" parameterType="long">
@@ -41,21 +41,30 @@
         select SUM (salary) from employee where iddepartment = #{idDep}
     </select>
 
+    <select id="getMaxSalary" resultType="java.lang.Integer" parameterType="long">
+        select MAX (salary) from employee where iddepartment = #{idDep}
+    </select>
+
+    <select id="getMans" resultMap="employee">
+        select * from employee
+            where sex = #{cSex} and dateofdismissal is null
+    </select>
+
     <insert id="insert" parameterType="Employee">
         insert into employee(idemployee, iddepartment, idposition, idcompany, surname, name, patronymic, sex,
             datebirth, phonenumber, email, employmentdate, dateofdismissal, salary, ischief)
-            values (#{employee.idemployee}, #{employee.iddepartment}, #{employee.idposition}, #{employee.idcompany},
-            #{employee.surname}, #{employee.name}, #{employee.patronymic}, #{employee.sex}, #{employee.datebirth},
-            #{employee.phonenumber},#{employee.email}, #{employee.employmentdate},#{employee.dateofdismissal},
-            #{employee.salary},#{employee.ischief});
+            values (#{employee.idEmployee}, #{employee.idDepartment}, #{employee.idPosition}, #{employee.idCompany},
+              #{employee.surname}, #{employee.name}, #{employee.patronymic}, #{employee.sex}, #{employee.dateBirth},
+              #{employee.phoneNumber},#{employee.email}, #{employee.employmentDate},#{employee.dateOfDismissal},
+              #{employee.salary},#{employee.isChief});
     </insert>
 
     <update id="update" parameterType="Employee">
-      update employee set idemployee = #{employee.idemployee}, iddepartment = #{employee.iddepartment},
-        idposition = #{employee.idposition}, idcompany = #{employee.idcompany}, surname = #{employee.surname},
-        name =#{employee.name}, patronymic =#{employee.patronymic},sex =#{employee.sex}, datebirth = #{employee.datebirth},
-        phonenumber= #{employee.phonenumber},email =#{employee.email}, employmentdate=#{employee.employmentdate},
-        dateofdismissal =#{employee.dateofdismissal}, salary =#{employee.salary},ischief =#{employee.ischief}
+      update employee set idemployee = #{employee.idEmployee}, iddepartment = #{employee.idDepartment},
+        idposition = #{employee.idPosition}, idcompany = #{employee.idCompany}, surname = #{employee.surname},
+        name =#{employee.name}, patronymic =#{employee.patronymic},sex =#{employee.sex}, datebirth = #{employee.dateBirth},
+        phonenumber= #{employee.phoneNumber},email =#{employee.email}, employmentdate=#{employee.employmentDate},
+        dateofdismissal =#{employee.dateOfDismissal}, salary =#{employee.salary},ischief =#{employee.isChief}
         where idemployee = #{idOld}
     </update>
 

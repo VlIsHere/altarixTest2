@@ -17,4 +17,8 @@ public interface EmployeeDAO extends DAO {
     Integer getCntEmplByDep(@Param("idDep") long id);
 
     long getFondMoney(@Param("idDep") long id);
+
+    Integer getMaxSalary(@Param("idDep") long id);
+
+    ArrayList<Employee> getMans(@Param(value = "cSex") char cSex);
 }

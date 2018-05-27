@@ -66,11 +66,11 @@ import java.util.logging.Logger;
  * FLC 2	Значения атрибутов типа “Дата” должны быть валидными.-------------------------------------------------------------
  * FLC 3	В качестве допустимых символов для атрибута “контактный телефон” могут использоваться символы “+-0123456789()” и пробел.---------------
  * FLC 4	Значение атрибута “адрес электронной почты” должно быть валидным.------------------------------------
- * FLC 5	Значение атрибута “Дата приема на работу” не может быть меньше значения атрибута “Дата рождения”.
- * FLC 6	Значение атрибута “Дата увольнения” не может быть меньше значения атрибута “ Дата приема на работу”.
+ * FLC 5	Значение атрибута “Дата приема на работу” не может быть меньше значения атрибута “Дата рождения”.------------------------------
+ * FLC 6	Значение атрибута “Дата увольнения” не может быть меньше значения атрибута “ Дата приема на работу”.----------------------------
  * FLC 7	Значение атрибута “Оклад” должно быть валидным.------------------------------------------------
- * FLC 8	Оклад сотрудника не может быть больше оклада руководителя департамента, в котором работает сотрудник.
- * FLC 9	В департаменте может быть только один руководитель.
+ * FLC 8	Оклад сотрудника не может быть больше оклада руководителя департамента, в котором работает сотрудник.---------------------------
+ * FLC 9	В департаменте может быть только один руководитель.-----------------------------------------
  */
 
 @Service
@@ -86,9 +86,13 @@ public class SQLService {
 
     public SQLService(){
         try {
-            this.reader =Resources.getResourceAsReader("mybatis-config.xml"); //Читаем файл с настройками подключения и настройками MyBatis
+            this.reader =Resources.getResourceAsReader("mybatis-config.xml");
             this.sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
             this.session = sqlSessionFactory.openSession();
+            deprtmntDAO = session.getMapper(DepartmentDAO.class);
+            employeeDAO = session.getMapper(EmployeeDAO.class);
+            companyDAO = session.getMapper(CompanyDAO.class);
+            positionInDeprtmntDAO = session.getMapper(PositionInDeprtmntDAO.class);
         } catch (IOException e) {
             logger.log(Level.SEVERE, null, e);
         }
@@ -104,12 +108,9 @@ public class SQLService {
             Checker.checkID(department.getId());
             Checker.checkID(department.getIdCompany());
             Checker.checkDate(department.getDateOfCreating(), new Date(System.currentTimeMillis()));
-            // mb sdelat idrootdep checking iz db i
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
             deprtmntDAO.insert(department);
             session.commit();
         } catch (NegativeNumbException | InvalidDateException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return department.getId();
@@ -120,19 +121,14 @@ public class SQLService {
             Checker.checkID(department.getId());
             Checker.checkID(department.getIdCompany());
             Checker.checkDate(department.getDateOfCreating(), new Date(System.currentTimeMillis()));
-            // mb sdelat idrootdep checking iz db
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
             Department checkD =(Department) deprtmntDAO.getByID(department.getId());
             if (checkD.getNameDepartment().equals(department.getNameDepartment())) throw new NotUniqueException();
             deprtmntDAO.update(department.getId(),department);
             session.commit();
         }catch (NotUniqueException e){
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
-           //todo уведомить пользователя, что он отправил не уникальное название department
         }
         catch (NegativeNumbException | InvalidDateException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return department.getId();
@@ -142,9 +138,6 @@ public class SQLService {
         boolean isOK = false;
         try {
             Checker.checkID(id);
-            // mb sdelat idrootdep checking iz db
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            employeeDAO = session.getMapper(EmployeeDAO.class);
             ArrayList<Employee> employees = employeeDAO.getByIdDeprtmnt(id);//мб написать запрос для 1-го встречного с idDep??
             if (!employees.isEmpty()) throw new NotEmptyDeprtmntException();
             deprtmntDAO.delete(id);
@@ -158,9 +151,8 @@ public class SQLService {
             session.commit();
             isOK = true;
         }catch (NotEmptyDeprtmntException e){
-            //todo тоже какую-то обработку надо
+            logger.log(Level.SEVERE, null, e);
         }catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return isOK;
@@ -170,16 +162,11 @@ public class SQLService {
         DepartmentInfo depInfo = null;
         try {
             Checker.checkID(idDep);
-            // mb sdelat idrootdep checking iz db
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            employeeDAO = session.getMapper(EmployeeDAO.class);
-
             depInfo = new DepartmentInfo();
             depInfo.setDepartment((Department) deprtmntDAO.getByID(idDep));
             depInfo.setBoss(employeeDAO.getBossOfDep(idDep));
             depInfo.setCntEmployee(employeeDAO.getCntEmplByDep(idDep));
         }catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return depInfo;
@@ -189,11 +176,8 @@ public class SQLService {
         ArrayList<Department> childs = null;
         try {
             Checker.checkID(idRoot);
-            // mb sdelat idrootdep checking iz db
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
             childs = deprtmntDAO.getChilds(idRoot);
         }catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return childs;
@@ -203,10 +187,8 @@ public class SQLService {
         ArrayList<Department> childs = null;
         try {
             Checker.checkID(idRoot);
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
             childs = getChilds(idRoot);
         }catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return childs;
@@ -217,11 +199,13 @@ public class SQLService {
             Checker.checkID(idDepChild);
             Checker.checkID(idParent);
             deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            //todo стоит ли проверять на наличие этих департаментов?
+            if (deprtmntDAO.getByID(idDepChild)==null || deprtmntDAO.getByID(idParent)==null)
+                throw new InvalidDataException();
             deprtmntDAO.updateParentDep(idDepChild,idParent);
             session.commit();
         }catch (NegativeNumbException e) {
-            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDataException e) {
             logger.log(Level.SEVERE, null, e);
         }
         return idDepChild;
@@ -231,12 +215,11 @@ public class SQLService {
         ArrayList<Department> ancestors = null;
         try {
             Checker.checkID(idDepChild);
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            //todo стоит ли проверять на наличие эт департаментов?
             Department child = (Department) deprtmntDAO.getByID(idDepChild);
             ancestors = getArrAncestors(child.getIdRootDepartment());
         }catch (NegativeNumbException e) {
-            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDataException e) {
             logger.log(Level.SEVERE, null, e);
         }
         return ancestors;
@@ -250,9 +233,7 @@ public class SQLService {
     public long getFondMoneyByDep(long idDep){
         try {
             Checker.checkID(idDep);
-            employeeDAO = session.getMapper(EmployeeDAO.class);
         } catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return employeeDAO.getFondMoney(idDep);
@@ -262,11 +243,8 @@ public class SQLService {
         ArrayList<Employee> employees = null;
         try {
             Checker.checkID(idDep);
-            employeeDAO = session.getMapper(EmployeeDAO.class);
-            //todo стоит ли проверять на наличие эт департаментов?
             employees = employeeDAO.getByIdDeprtmnt(idDep);
         }catch (NegativeNumbException e) {
-            session.rollback();
             logger.log(Level.SEVERE, null, e);
         }
         return employees;
@@ -274,15 +252,122 @@ public class SQLService {
 
     public long createEmployee(Employee employee){
         try {
-            Checker.checkEmployee(employee);
-            employeeDAO = session.getMapper(EmployeeDAO.class);
+            Checker.checkEmployee(employee,employeeDAO);
             employeeDAO.insert(employee);
             session.commit();
-        } catch (InvalidDataException e) {
-            session.rollback();
+        } catch (InvalidDataException e) {//todo сделать для каждой exception свою обработку
             logger.log(Level.SEVERE, null, e);
         }
         return employee.getId();
+    }
+
+    public long changeEmployee(Employee employee){
+        try {
+            Checker.checkEmployee(employee,employeeDAO);
+            if (employeeDAO.getByID(employee.getId())==null) throw new InvalidDataException();
+            employeeDAO.update(employee.getId(),employee);
+            session.commit();
+        } catch (InvalidDataException e) {//todo сделать для каждой exception свою обработку
+            logger.log(Level.SEVERE, null, e);
+        }
+        return employee.getId();
+    }
+
+    public long dismisEmployee(long id,Date dateDismis){
+        try {
+            Checker.checkID(id);
+            Checker.checkDate(dateDismis,new Date(System.currentTimeMillis()));
+            Employee emp = (Employee) employeeDAO.getByID(id);
+            Checker.checkDate(emp.getEmploymentDate(),dateDismis);
+            emp.setDateOfDismissal(dateDismis);
+            employeeDAO.update(id,emp);
+            session.commit();
+        } catch (NegativeNumbException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDateException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return id;
+    }
+
+    public Employee getEmployee(long id){
+        Employee res = null;
+        try {
+            Checker.checkID(id);
+            res = (Employee) employeeDAO.getByID(id);
+        } catch (InvalidDataException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return res;
+    }
+
+    public boolean transferEmployee(long idEmp, long idNewDep) {
+        boolean resOperat = false;
+        try {
+            Checker.checkID(idEmp);
+            Checker.checkID(idNewDep);
+            Employee emp = (Employee) employeeDAO.getByID(idEmp);
+            if (emp==null) throw new InvalidDataException();
+            emp.setIdDepartment(idNewDep);
+            employeeDAO.update(idEmp,emp);
+            session.commit();
+            resOperat = true;
+        } catch (NegativeNumbException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDateException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDataException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return resOperat;
+    }
+
+    public boolean transferEmployees(long idOldDep, long idNewDep) {
+        boolean resOperat = false;
+        try {
+            Checker.checkID(idOldDep);
+            Checker.checkID(idNewDep);
+            ArrayList<Employee> emps = employeeDAO.getByIdDeprtmnt(idOldDep);
+            if (emps.size()==0) throw new InvalidDataException();
+            Employee tmp;
+            for (int i = 0; i < emps.size(); i++) {
+                tmp = emps.get(i);
+                tmp.setIdDepartment(idNewDep);
+                employeeDAO.update(tmp.getId(),tmp);
+            }
+            session.commit();
+            resOperat = true;
+        } catch (NegativeNumbException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDateException e) {
+            logger.log(Level.SEVERE, null, e);
+        } catch (InvalidDataException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return resOperat;
+    }
+
+    public Employee getBossOfEmployee(long id){
+        Employee res = null;
+        try {
+            Checker.checkID(id);
+            Employee emp = (Employee) employeeDAO.getByID(id);
+            res = employeeDAO.getBossOfDep(emp.getIdDepartment());
+        } catch (InvalidDataException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return res;
+    }
+
+    public List<Employee> getContactEmplsData(String sex){
+        ArrayList<Employee> emps = null;
+        try {
+            char cSex = Checker.checkSex(sex);
+            emps = employeeDAO.getMans(cSex);
+        } catch (InvalidDataException e) {
+            logger.log(Level.SEVERE, null, e);
+        }
+        return emps;
     }
 
 //for getAncestors

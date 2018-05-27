@@ -1,19 +1,20 @@
 package com.altarix.artifacttest2.models.pojo;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Department implements Domain {
     private long idDepartment;
     private long idCompany;
-    private long idRootDepartment;
+    private Long idRootDepartment;
     private Date dateOfCreating;
     private String nameDepartment;
 
-    public long getIdRootDepartment() {
+    public Long getIdRootDepartment() {
         return idRootDepartment;
     }
 
-    public void setIdRootDepartment(long idRootDepartment) {
+    public void setIdRootDepartment(Long idRootDepartment) {
         this.idRootDepartment = idRootDepartment;
     }
 
@@ -50,4 +51,20 @@ public class Department implements Domain {
         this.nameDepartment = nameDepartment;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Department that = (Department) o;
+        return idDepartment == that.idDepartment &&
+                idCompany == that.idCompany &&
+                Objects.equals(idRootDepartment, that.idRootDepartment) &&
+                Objects.equals(dateOfCreating, that.dateOfCreating) &&
+                Objects.equals(nameDepartment, that.nameDepartment);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idDepartment, idCompany, idRootDepartment, dateOfCreating, nameDepartment);
+    }
 }

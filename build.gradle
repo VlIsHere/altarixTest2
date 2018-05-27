@@ -25,6 +25,8 @@ repositories {
 
 
 dependencies {
+//	// https://mvnrepository.com/artifact/org.projectlombok/lombok
+//	provided group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
 	compile('org.springframework.boot:spring-boot-starter-web')
 	// https://mvnrepository.com/artifact/org.mybatis/mybatis
 	compile group: 'org.mybatis', name: 'mybatis', version: '3.4.6'

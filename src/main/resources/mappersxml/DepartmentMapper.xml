@@ -20,6 +20,10 @@
         select * from department where idrootdepartment = #{idRoot};
     </select>
 
+    <select resultMap="Deprtmnt" id="getByName" parameterType="java.lang.String">
+        select * from department where namedepartment = #{nameDep};
+    </select>
+
     <insert id="insert" parameterType="Department">
         insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment)
             values (#{department.idDepartment},#{department.idCompany},#{department.dateOfCreating},
@@ -30,6 +34,11 @@
         update department set idcompany = #{departmentNew.idCompany},dateofcreating = #{departmentNew.dateOfCreating},
           namedepartment = #{departmentNew.nameDepartment}, idrootdepartment = #{departmentNew.idRootDepartment}
           where iddepartment = #{idOld}
+    </update>
+
+    <update id="updateParentDep" parameterType="Long">
+        update department set idrootdepartment = #{idParent}
+                  where iddepartment = #{idDepChild}
     </update>
 
     <delete id="delete" parameterType="long">delete from Department where iddepartment = #{id}</delete>

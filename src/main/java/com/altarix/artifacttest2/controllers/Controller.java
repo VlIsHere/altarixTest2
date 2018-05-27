@@ -4,6 +4,7 @@ package com.altarix.artifacttest2.controllers;
 import com.altarix.artifacttest2.json.response.DepartmentInfo;
 import com.altarix.artifacttest2.models.pojo.Company;
 import com.altarix.artifacttest2.models.pojo.Department;
+import com.altarix.artifacttest2.models.pojo.Employee;
 import com.altarix.artifacttest2.services.SQLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class Controller {
     //будет входить. Для самого верхнего департамента такой информации указывать не нужно.
     //инфа о департаменте, в который будет входить новый деп-нт, содержится в поле idrootDepartment
     @PutMapping("/d1/")
-    public long createDeprtmnt(@RequestBody Department department){
+    public long insertDeprtmnt(@RequestBody Department department){
         return sqlService.createDepartment(department);
     }
 
@@ -54,18 +55,50 @@ public class Controller {
     public List<Department> getChildDeps(@PathVariable(value = "idRoot") long idRoot){
         return sqlService.getChildDeps(idRoot);
     }
+
 //Предоставление информации о всех департаментах, находящихся в подчинении данного департамента
 // (все подчиненные департаменты. Для головного департамента - это все остальные департаменты).
     @GetMapping(value = "/d6/{idRoot}", produces = "application/json")
     public List<Department> getSubtreeDeps(@PathVariable(value = "idRoot") long idRoot){
         return sqlService.getSubtreeDeps(idRoot);
     }
+
 //		Перенос департамента. Задание другого департамента, куда будет входить данный департамент.
+    @PutMapping("/d7/{idParent}/{idChild}")
+    public long transferDep(@PathVariable(value = "idChild") Long idChild,@PathVariable(value = "idParent") Long idParent){
+        return sqlService.transferDep(idChild,idParent);//v, cltkfnm djpvj;yjcnm lkz null
+    }
+
 //		Получение информации о всех вышестоящих департаментах данного департамента.
-//		Поиск департамента по наименованию.
+    @GetMapping(value = "/d8/{idChild}", produces = "application/json")
+    public List<Department> getAncestors(@PathVariable(value = "idChild") long idChild){
+        return sqlService.getAncestors(idChild);
+    }
+
+    //		Поиск департамента по наименованию.
+    @GetMapping(value = "/d9/{nameDep}", produces = "application/json")
+    public Department getDepByName(@PathVariable(value = "nameDep") String nameDep){
+        return sqlService.getDepByName(nameDep);
+    }
+
 //		Получение информации о фонде заработной платы департамента (сумма зарплат всех сотрудников департамента).
+    @GetMapping(value = "/d10/{idDep}")
+    public long getFondMoney(@PathVariable(value = "idDep") long idDep){
+        return sqlService.getFondMoneyByDep(idDep);
+    }
+
 //		Получение списка сотрудников департамента.
+    @GetMapping(value = "/d11/{idDep}", produces = "application/json")
+    public List<Employee> getEmployees(@PathVariable(value = "idDep") long idDep) {
+        return sqlService.getEmployeesByDep(idDep);
+    }
+
 //		Создание сотрудника департамента.
+    @PutMapping("/d12/")
+    public long insertEmployee(@RequestBody Employee employee){
+        return sqlService.createEmployee(employee);
+    }
+
 //		Редактирование сведений о сотруднике департамента.
 //		Увольнение сотрудника с указанием даты увольнения.
 //		Получение информации о сотруднике.

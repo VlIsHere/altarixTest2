@@ -4,10 +4,7 @@ import com.altarix.artifacttest2.dao.CompanyDAO;
 import com.altarix.artifacttest2.dao.DepartmentDAO;
 import com.altarix.artifacttest2.dao.EmployeeDAO;
 import com.altarix.artifacttest2.dao.PositionInDeprtmntDAO;
-import com.altarix.artifacttest2.exceptions.InvalidDateException;
-import com.altarix.artifacttest2.exceptions.NegativeNumbException;
-import com.altarix.artifacttest2.exceptions.NotEmptyDeprtmntException;
-import com.altarix.artifacttest2.exceptions.NotUniqueException;
+import com.altarix.artifacttest2.exceptions.*;
 import com.altarix.artifacttest2.json.response.DepartmentInfo;
 import com.altarix.artifacttest2.models.pojo.Department;
 import com.altarix.artifacttest2.models.pojo.Employee;
@@ -97,6 +94,11 @@ public class SQLService {
         }
     }
 
+    @PreDestroy
+    public void closeSession(){
+        session.close();
+    }
+
     public long createDepartment(Department department){
         try {
             Checker.checkID(department.getId());
@@ -146,6 +148,13 @@ public class SQLService {
             ArrayList<Employee> employees = employeeDAO.getByIdDeprtmnt(id);//мб написать запрос для 1-го встречного с idDep??
             if (!employees.isEmpty()) throw new NotEmptyDeprtmntException();
             deprtmntDAO.delete(id);
+            ArrayList<Department> childs = deprtmntDAO.getChilds(id);//если удалим, а он имеет детей, то они без него останутся!
+            Department tmp = null;
+            for (int i = 0; i < childs.size(); i++) {
+                tmp = childs.get(i);
+                tmp.setIdRootDepartment(null);
+                deprtmntDAO.update(tmp.getId(),tmp);
+            }
             session.commit();
             isOK = true;
         }catch (NotEmptyDeprtmntException e){
@@ -194,11 +203,8 @@ public class SQLService {
         ArrayList<Department> childs = null;
         try {
             Checker.checkID(idRoot);
-            // mb sdelat idrootdep checking iz db
             deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            childs = deprtmntDAO.getChilds(idRoot);
-            go(childs,idRoot);
-            session.commit();
+            childs = getChilds(idRoot);
         }catch (NegativeNumbException e) {
             session.rollback();
             logger.log(Level.SEVERE, null, e);
@@ -206,15 +212,101 @@ public class SQLService {
         return childs;
     }
 
-    private void go(ArrayList<Department> childs,long idRoot){
-        for (int i = 0; i < childs.size(); i++) {
-            go(childs,childs.get(i).getId());//todo not right recursion!
-            childs.addAll(deprtmntDAO.getChilds(idRoot));
+    public long transferDep(Long idDepChild,Long idParent){
+        try {
+            Checker.checkID(idDepChild);
+            Checker.checkID(idParent);
+            deprtmntDAO = session.getMapper(DepartmentDAO.class);
+            //todo стоит ли проверять на наличие этих департаментов?
+            deprtmntDAO.updateParentDep(idDepChild,idParent);
+            session.commit();
+        }catch (NegativeNumbException e) {
+            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        }
+        return idDepChild;
+    }
+
+    public List<Department> getAncestors(long idDepChild) {
+        ArrayList<Department> ancestors = null;
+        try {
+            Checker.checkID(idDepChild);
+            deprtmntDAO = session.getMapper(DepartmentDAO.class);
+            //todo стоит ли проверять на наличие эт департаментов?
+            Department child = (Department) deprtmntDAO.getByID(idDepChild);
+            ancestors = getArrAncestors(child.getIdRootDepartment());
+        }catch (NegativeNumbException e) {
+            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        }
+        return ancestors;
+    }
+
+    public Department getDepByName(String nameDep) {
+        deprtmntDAO = session.getMapper(DepartmentDAO.class);
+        return deprtmntDAO.getByName(nameDep);
+    }
+
+    public long getFondMoneyByDep(long idDep){
+        try {
+            Checker.checkID(idDep);
+            employeeDAO = session.getMapper(EmployeeDAO.class);
+        } catch (NegativeNumbException e) {
+            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        }
+        return employeeDAO.getFondMoney(idDep);
+    }
+
+    public ArrayList<Employee> getEmployeesByDep(long idDep){
+        ArrayList<Employee> employees = null;
+        try {
+            Checker.checkID(idDep);
+            employeeDAO = session.getMapper(EmployeeDAO.class);
+            //todo стоит ли проверять на наличие эт департаментов?
+            employees = employeeDAO.getByIdDeprtmnt(idDep);
+        }catch (NegativeNumbException e) {
+            session.rollback();
+            logger.log(Level.SEVERE, null, e);
+        }
+        return employees;
+    }
+
+    public long createEmployee(Employee employee){
+        try {
+            Checker.checkEmployee(employee);
+            employeeDAO = session.getMapper(EmployeeDAO.class);
+            employeeDAO.insert(employee);
+            session.commit();
+        } catch (InvalidDataException e) {
+            session.rollback();
+            logger.log(Level.SEVERE, null, e);
         }
     }
 
-    @PreDestroy
-    public void closeSession(){
-        session.close();
+//for getAncestors
+    private ArrayList<Department> getArrAncestors(Long idRoot){
+        Department tmp = null;
+        ArrayList<Department> deps = new ArrayList<>();
+        while (idRoot!=null){
+            tmp = (Department) deprtmntDAO.getByID(idRoot);
+            deps.add(tmp);
+            idRoot = tmp.getIdRootDepartment();
+        }
+        return deps;
     }
+
+//for getSubtreeDeps
+    private  ArrayList<Department> getChilds(long idRoot){
+        ArrayList<Department> childs = deprtmntDAO.getChilds(idRoot);
+        ArrayList<Department> tmp = null;
+        if (childs!=null || childs.size()!=0) {
+            for (int i = 0; i < childs.size(); i++) {
+                tmp = getChilds(childs.get(i).getId());
+                childs.addAll(tmp);
+            }
+        }
+        return childs;
+    }
+
 }

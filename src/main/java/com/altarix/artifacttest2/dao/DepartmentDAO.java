@@ -11,5 +11,9 @@ public interface DepartmentDAO extends DAO {
 
     boolean update(@Param("idOld") long id, @Param("departmentNew") Department department);
 
+    boolean updateParentDep(@Param("idDepChild") Long idDepChild,@Param("idParent") Long idParent);
+
     ArrayList<Department> getChilds(@Param("idRoot") long idRoot);
+
+    Department getByName(@Param("nameDep") String nameDep);
 }

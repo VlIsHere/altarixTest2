@@ -1,6 +1,7 @@
 package com.altarix.artifacttest2.services;
 
 import com.altarix.artifacttest2.exceptions.*;
+import com.altarix.artifacttest2.models.pojo.Employee;
 
 import java.sql.Date;
 import java.util.regex.Matcher;
@@ -41,7 +42,23 @@ public class Checker {
     }
 
     public static void checkForFIO(String name) throws InvalidDataException {
-        matcher = NAME.matcher(name);
-        if (!matcher.matches()) throw new InvalidDataException();
+        if (name!= null) {
+            matcher = NAME.matcher(name);
+            if (!matcher.matches()) throw new InvalidDataException();
+        }
+    }
+
+    public static void checkEmployee(Employee employee) throws InvalidDataException {
+        Checker.checkID(employee.getId());
+        Checker.checkID(employee.getIdCompany());
+        Checker.checkID(employee.getIdDepartment());
+        Checker.checkID(employee.getIdPosition());
+        Checker.checkEmail(employee.getEmail());
+        Checker.checkForFIO(employee.getName());
+        Checker.checkForFIO(employee.getPatronymic());
+        Checker.checkForFIO(employee.getSurname());
+        Checker.checkDate(employee.getEmploymentDate(),new Date(System.currentTimeMillis()));
+        Checker.checkDate(employee.getDateOfDismissal(),new Date(System.currentTimeMillis()));
+        Checker.checkDate(employee.getDateBirth(),new Date(System.currentTimeMillis()));
     }
 }

@@ -30,11 +30,15 @@
     </select>
 
     <select resultMap="employee" id="getBossOfDep" parameterType="long">
-        select * from employee where iddepartment = 0 and employee.ischief;
+        select * from employee where iddepartment = #{idDep} and employee.ischief;
     </select>
     
     <select id="getCntEmplByDep" resultType="java.lang.Integer" parameterType="long">
           select COUNT(idemployee) from employee where iddepartment = #{idDep};
+    </select>
+
+    <select id="getFondMoney" resultType="long" parameterType="long">
+        select SUM (salary) from employee where iddepartment = #{idDep}
     </select>
 
     <insert id="insert" parameterType="Employee">

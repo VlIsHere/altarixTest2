@@ -15,4 +15,6 @@ public interface EmployeeDAO extends DAO {
     Employee getBossOfDep(@Param("idDep") long id);
 
     Integer getCntEmplByDep(@Param("idDep") long id);
+
+    long getFondMoney(@Param("idDep") long id);
 }

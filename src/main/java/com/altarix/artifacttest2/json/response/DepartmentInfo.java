@@ -1,7 +1,7 @@
 package com.altarix.artifacttest2.json.response;
 
-import com.altarix.artifacttest2.models.pojo.Department;
-import com.altarix.artifacttest2.models.pojo.Employee;
+import com.altarix.artifacttest2.pojo.Department;
+import com.altarix.artifacttest2.pojo.Employee;
 
 public class DepartmentInfo {
     private Department department;

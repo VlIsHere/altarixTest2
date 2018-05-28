@@ -6,10 +6,10 @@
         <!--<typeAlias alias="CompanyDAO" type="com.altarix.artifacttest2.daopanyMapper"/>-->
     <!--</typeAliases>-->
     <typeAliases>
-    <typeAlias type="com.altarix.artifacttest2.models.pojo.Company" alias="Company"/>
-    <typeAlias type="com.altarix.artifacttest2.models.pojo.Department" alias="Department"/>
-    <typeAlias type="com.altarix.artifacttest2.models.pojo.Employee" alias="Employee"/>
-    <typeAlias type="com.altarix.artifacttest2.models.pojo.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
+    <typeAlias type="com.altarix.artifacttest2.pojo.Company" alias="Company"/>
+    <typeAlias type="com.altarix.artifacttest2.pojo.Department" alias="Department"/>
+    <typeAlias type="com.altarix.artifacttest2.pojo.Employee" alias="Employee"/>
+    <typeAlias type="com.altarix.artifacttest2.pojo.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
     </typeAliases>
 
     <environments default="development">

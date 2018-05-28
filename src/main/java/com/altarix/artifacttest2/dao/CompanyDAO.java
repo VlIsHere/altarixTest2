@@ -1,7 +1,7 @@
 package com.altarix.artifacttest2.dao;
 
 
-import com.altarix.artifacttest2.models.pojo.Company;
+import com.altarix.artifacttest2.pojo.Company;
 import org.apache.ibatis.annotations.Param;
 
 public interface CompanyDAO extends DAO {

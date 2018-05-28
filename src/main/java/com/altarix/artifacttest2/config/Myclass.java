@@ -11,8 +11,9 @@ public class Myclass extends Application {
     public Myclass() {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.0");
-        beanConfig.setBasePath("com/altarix/artifacttest2/controllers");
-        beanConfig.setResourcePackage("swagger");
+        beanConfig.setHost("localhost:8080");
+        beanConfig.setBasePath("com/altarix/artifacttest2");
+        beanConfig.setResourcePackage("io.swagger.resources");
         beanConfig.setScan(true);
     }
 

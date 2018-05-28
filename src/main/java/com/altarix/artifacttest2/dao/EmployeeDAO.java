@@ -1,6 +1,6 @@
 package com.altarix.artifacttest2.dao;
 
-import com.altarix.artifacttest2.models.pojo.Employee;
+import com.altarix.artifacttest2.pojo.Employee;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;

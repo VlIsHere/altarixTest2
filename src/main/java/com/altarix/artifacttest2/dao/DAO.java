@@ -1,6 +1,6 @@
 package com.altarix.artifacttest2.dao;
 
-import com.altarix.artifacttest2.models.pojo.Domain;
+import com.altarix.artifacttest2.pojo.Domain;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

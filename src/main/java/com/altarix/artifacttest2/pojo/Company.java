@@ -1,4 +1,4 @@
-package com.altarix.artifacttest2.models.pojo;
+package com.altarix.artifacttest2.pojo;
 
 
 public class Company implements Domain {

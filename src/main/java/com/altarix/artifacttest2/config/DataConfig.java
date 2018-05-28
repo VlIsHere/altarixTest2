@@ -28,7 +28,7 @@ public class DataConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
-        sessionFactory.setTypeAliasesPackage("com/altarix/artifacttest2/models/pojo");
+        sessionFactory.setTypeAliasesPackage("com/altarix/artifacttest2/pojo");
         sessionFactory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
         return sessionFactory.getObject();
     }

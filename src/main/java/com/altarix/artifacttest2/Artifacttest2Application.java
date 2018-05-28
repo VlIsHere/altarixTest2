@@ -1,6 +1,6 @@
 package com.altarix.artifacttest2;
 
-import com.altarix.artifacttest2.models.pojo.*;
+import com.altarix.artifacttest2.pojo.*;
 import org.apache.ibatis.type.MappedTypes;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

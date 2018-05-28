@@ -2,7 +2,7 @@ package com.altarix.artifacttest2.services;
 
 import com.altarix.artifacttest2.dao.EmployeeDAO;
 import com.altarix.artifacttest2.exceptions.*;
-import com.altarix.artifacttest2.models.pojo.Employee;
+import com.altarix.artifacttest2.pojo.Employee;
 
 import java.sql.Date;
 import java.util.regex.Matcher;
@@ -28,11 +28,6 @@ public class Checker {
         if (id<0) throw new NegativeNumbException();
     }
 
-    /**
-     * @param date
-     * @param currDate текущая точная дата
-     * @throws InvalidDateException
-     */
     public static void checkDate(Date date,Date currDate) throws InvalidDateException {
         if (date !=null && currDate!=null) {
             if (currDate.compareTo(date) < 0) throw new InvalidDateException();//дата должна меньше настоящей!

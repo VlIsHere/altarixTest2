@@ -37,7 +37,7 @@
           select COUNT(idemployee) from employee where iddepartment = #{idDep};
     </select>
 
-    <select id="getFondMoney" resultType="long" parameterType="long">
+    <select id="getFondMoney" resultType="java.lang.Long" parameterType="long">
         select SUM (salary) from employee where iddepartment = #{idDep}
     </select>
 

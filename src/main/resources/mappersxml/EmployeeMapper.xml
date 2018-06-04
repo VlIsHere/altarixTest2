@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.altarix.artifacttest2.dao.EmployeeDAO">
     <resultMap id="employee" type="Employee">
-        <id property="idEmployee" column="idemployee"/>
+        <id property="id" column="idemployee"/>
         <result property="idDepartment" column="iddepartment"/>
         <result property="idPosition" column="idposition"/>
         <result property="idCompany" column="idcompany"/>
@@ -53,14 +53,14 @@
     <insert id="insert" parameterType="Employee">
         insert into employee(idemployee, iddepartment, idposition, idcompany, surname, name, patronymic, sex,
             datebirth, phonenumber, email, employmentdate, dateofdismissal, salary, ischief)
-            values (#{employee.idEmployee}, #{employee.idDepartment}, #{employee.idPosition}, #{employee.idCompany},
+            values (#{employee.id}, #{employee.idDepartment}, #{employee.idPosition}, #{employee.idCompany},
               #{employee.surname}, #{employee.name}, #{employee.patronymic}, #{employee.sex}, #{employee.dateBirth},
               #{employee.phoneNumber},#{employee.email}, #{employee.employmentDate},#{employee.dateOfDismissal},
               #{employee.salary},#{employee.isChief});
     </insert>
 
     <update id="update" parameterType="Employee">
-      update employee set idemployee = #{employee.idEmployee}, iddepartment = #{employee.idDepartment},
+      update employee set idemployee = #{employee.id}, iddepartment = #{employee.idDepartment},
         idposition = #{employee.idPosition}, idcompany = #{employee.idCompany}, surname = #{employee.surname},
         name =#{employee.name}, patronymic =#{employee.patronymic},sex =#{employee.sex}, datebirth = #{employee.dateBirth},
         phonenumber= #{employee.phoneNumber},email =#{employee.email}, employmentdate=#{employee.employmentDate},

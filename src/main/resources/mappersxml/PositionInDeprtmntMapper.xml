@@ -4,7 +4,7 @@
 <mapper namespace="com.altarix.artifacttest2.dao.PositionInDeprtmntDAO">
 
     <resultMap id="PosInDep" type="PositionInDeprtmnt">
-        <id property="idPosition" column="idposition"/>
+        <id property="id" column="idposition"/>
         <result property="namePosition" column="nameposition"/>
     </resultMap>
     <select resultMap="PosInDep" id="getAll">select * from positionindeprtmnt</select>
@@ -14,11 +14,11 @@
     </select>
 
     <insert id="insert" parameterType="PositionInDeprtmnt">
-        insert into positionindeprtmnt(idposition, nameposition) values (#{posInDeprtmnt.idPosition}, #{posInDeprtmnt.namePosition});
+        insert into positionindeprtmnt(idposition, nameposition) values (#{posInDeprtmnt.id}, #{posInDeprtmnt.namePosition});
     </insert>
 
     <update id="update" parameterType="PositionInDeprtmnt">
-        update positionindeprtmnt set idposition = #{posInDeprtmnt.idPosition}, nameposition = #{posInDeprtmnt.}
+        update positionindeprtmnt set idposition = #{posInDeprtmnt.id}, nameposition = #{posInDeprtmnt.}
             where idposition = #{idOld}
     </update>
 

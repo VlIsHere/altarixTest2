@@ -4,7 +4,7 @@
 <mapper namespace="com.altarix.artifacttest2.dao.DepartmentDAO" >
 
     <resultMap id="Deprtmnt" type="Department">
-        <id property="idDepartment" column="iddepartment"/>
+        <id property="id" column="iddepartment"/>
         <result property="idCompany" column="idcompany"/>
         <result property="idRootDepartment" column="idrootdepartment"/>
         <result property="dateOfCreating" column="dateofcreating"/>
@@ -25,9 +25,7 @@
     </select>
 
     <insert id="insert" parameterType="Department">
-        insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment)
-            values (#{department.idDepartment},#{department.idCompany},#{department.dateOfCreating},
-                    #{department.nameDepartment},#{department.idRootDepartment});
+        insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment) values (#{department.id},#{department.idCompany},#{department.dateOfCreating},#{department.nameDepartment},#{department.idRootDepartment});
     </insert>
 
     <update id="update" parameterType="Department">

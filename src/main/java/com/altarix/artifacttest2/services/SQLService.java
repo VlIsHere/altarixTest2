@@ -65,6 +65,10 @@ public class SQLService {
             logger.log(Level.SEVERE, null, e);
             response.setCode(400);
             response.setMessage(e.getLogMessage());
+        }catch (PersistenceException e){
+            logger.log(Level.SEVERE, null, e);
+            response.setCode(409);
+            response.setMessage(e.getMessage());
         }finally {
             response.setField(department.getId());
             return response;
@@ -195,8 +199,7 @@ public class SQLService {
         try {
             Checker.checkID(idDepChild);
             Checker.checkID(idParent);
-            deprtmntDAO = session.getMapper(DepartmentDAO.class);
-            if (deprtmntDAO.getByID(idDepChild)==null || deprtmntDAO.getByID(idParent)==null)
+            if (deprtmntDAO.getByID(idDepChild)==null || deprtmntDAO.getByID(idParent)==null || idDepChild==idParent)
                 throw new InvalidDataException();
             deprtmntDAO.updateParentDep(idDepChild,idParent);
             session.commit();

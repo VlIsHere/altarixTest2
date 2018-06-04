@@ -2,16 +2,16 @@ package com.altarix.artifacttest2.pojo;
 
 
 public class PositionInDeprtmnt implements Domain{
-    private long idPosition;
+    private long id;
     private String namePosition;
 
     @Override
     public long getId() {
-        return idPosition;
+        return id;
     }
 
-    public void setIdPosition(long idPosition) {
-        this.idPosition = idPosition;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNamePosition() {

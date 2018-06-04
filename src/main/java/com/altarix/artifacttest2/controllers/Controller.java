@@ -34,7 +34,7 @@ public class Controller {
 
     @PUT
     @Path("/d1/")
-    @ApiOperation(value = "insertDeprtmnt", response = TransactionResult.class)
+    @ApiOperation(value = "createDeprtmnt", response = TransactionResult.class)
     @PutMapping("/d1/")
     public TransactionResult insertDeprtmnt(@RequestBody Department department){
         return sqlService.createDepartment(department);
@@ -122,7 +122,7 @@ public class Controller {
 
     @PUT
     @Path("/d12/")
-    @ApiOperation(value = "insertEmployee", response = TransactionResult.class)
+    @ApiOperation(value = "createEmployee", response = TransactionResult.class)
     @PutMapping("/d12/")
     public TransactionResult insertEmployee(@RequestBody Employee employee){
         return sqlService.createEmployee(employee);

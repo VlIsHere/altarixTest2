@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 public class Department implements Domain {
-    private long idDepartment;
+    private long id;
     private long idCompany;
     private Long idRootDepartment;
     private Date dateOfCreating;
@@ -20,11 +20,11 @@ public class Department implements Domain {
 
     @Override
     public long getId() {
-        return idDepartment;
+        return id;
     }
 
-    public void setIdDepartment(long idDepartment) {
-        this.idDepartment = idDepartment;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getIdCompany() {
@@ -56,7 +56,7 @@ public class Department implements Domain {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Department that = (Department) o;
-        return idDepartment == that.idDepartment &&
+        return id == that.id &&
                 idCompany == that.idCompany &&
                 Objects.equals(idRootDepartment, that.idRootDepartment) &&
                 Objects.equals(dateOfCreating, that.dateOfCreating) &&
@@ -65,6 +65,6 @@ public class Department implements Domain {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idDepartment, idCompany, idRootDepartment, dateOfCreating, nameDepartment);
+        return Objects.hash(id, idCompany, idRootDepartment, dateOfCreating, nameDepartment);
     }
 }

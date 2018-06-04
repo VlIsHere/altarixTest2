@@ -3,7 +3,7 @@ package com.altarix.artifacttest2.pojo;
 import java.sql.Date;
 
 public class Employee implements Domain {
-    private long idEmployee;
+    private long id;
     private long idDepartment;
     private long idPosition;
     private long idCompany;
@@ -20,7 +20,7 @@ public class Employee implements Domain {
     private boolean isChief;
 
 //    private Employee(EmployeeBuilder empBuilder) {
-//        this.idEmployee = empBuilder.idEmployee;
+//        this.id = empBuilder.id;
 //        this.idDepartment = empBuilder.idDepartment;
 //        this.idPosition = empBuilder.idPosition;
 //        this.idCompany = empBuilder.idCompany;
@@ -39,7 +39,7 @@ public class Employee implements Domain {
 
     @Override
     public long getId() {
-        return idEmployee;
+        return id;
     }
 
     public long getIdDepartment() {
@@ -154,14 +154,14 @@ public class Employee implements Domain {
         isChief = chief;
     }
 
-    public void setIdEmployee(long idEmployee) {
-        this.idEmployee = idEmployee;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
     public String toString() {
         return "Employee{" +
-                "idEmployee=" + idEmployee +
+                "id=" + id +
                 ", idDepartment=" + idDepartment +
                 ", idPosition=" + idPosition +
                 ", idCompany=" + idCompany +
@@ -180,7 +180,7 @@ public class Employee implements Domain {
     }
 
     //    static class EmployeeBuilder{
-//        private long idEmployee;
+//        private long id;
 //        private long idDepartment;
 //        private long idPosition;
 //        private long idCompany;
@@ -200,17 +200,17 @@ public class Employee implements Domain {
 //            return new Employee(this);
 //        }
 //
-//        public EmployeeBuilder setIdEmployee(long idEmployee) {
-//            this.idEmployee = idEmployee;
+//        public EmployeeBuilder setId(long id) {
+//            this.id = id;
 //            return this;
 //        }
 //
-//        public EmployeeBuilder setIdDepartment(long idDepartment) {
+//        public EmployeeBuilder setId(long idDepartment) {
 //            this.idDepartment = idDepartment;
 //            return this;
 //        }
 //
-//        public EmployeeBuilder setIdPosition(long idPosition) {
+//        public EmployeeBuilder setId(long idPosition) {
 //            this.idPosition = idPosition;
 //            return this;
 //        }

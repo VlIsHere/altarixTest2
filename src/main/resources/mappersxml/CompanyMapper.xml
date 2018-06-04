@@ -4,7 +4,7 @@
 <mapper namespace="com.altarix.artifacttest2.dao.CompanyDAO">
 
     <resultMap id="Comp" type="Company">
-        <id property="idCompany" column="idcompany"/>
+        <id property="id" column="idcompany"/>
         <result property="nameCompany" column="namecompany"/>
     </resultMap>
 

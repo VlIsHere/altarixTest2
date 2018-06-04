@@ -36,8 +36,8 @@ public class Checker {
 
     public static char checkSex(String sex) throws InvalidDataException {
         if (sex.length()!=1 ) throw new InvalidDataException();
-        if (sex.equals("M"))  return 'М';
-        else if (sex.equals("W")) return 'Ж';
+        if (sex.equals("M") || sex.equals("М"))  return 'М';
+        else if (sex.equals("W") || sex.equals("Ж")) return 'Ж';
         else throw new InvalidDataException();
     }
 

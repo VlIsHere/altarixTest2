@@ -10,45 +10,45 @@ public class TransactionResult {
 
     public TransactionResult(){    }
 
-    TransactionResult(int code,String message){
+    public TransactionResult(int code,String message){
         result = new ArrayList<>();
         this.message = message;
         this.code = code;
     }
 
-    Object getField() {
+    public Object getField() {
         return field;
     }
 
-    void setField(Object field) {
+    public void setField(Object field) {
         this.field = field;
     }
 
-    Object getResult() {
+    public Object getResult() {
         return result;
     }
 
-    void addResult(Object result) {
+    public void addResult(Object result) {
         this.result.add(result);
     }
 
-    void addResult(ArrayList<Object> list) {
+    public void addResult(ArrayList<Object> list) {
         this.result.addAll(list);
     }
 
-    String getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    int getCode() {
+    public int getCode() {
         return code;
     }
 
-    void setCode(int code) {
+    public void setCode(int code) {
         this.code = code;
     }
 }

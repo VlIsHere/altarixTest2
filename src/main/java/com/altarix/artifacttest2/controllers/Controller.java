@@ -10,10 +10,18 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import java.sql.Date;
 
+/**
+ * R1) Необходимо реализовать метод, работающий по расписанию, и сохраняющий в отдельную таблицу информацию о
+ * фонде заработной платы, каждого департамента. Метод должен запускаться каждые 5 минут. При удалении
+ * какого-либо департамента из системы, должна также удаляться информация о департаменте и из этой таблицы.
+ *
+ * R2)При создании департамента, его переименовании или перемещении, необходимо записывать
+ * информацию об этих событиях в отдельной таблице.
+ */
+@Path("/sqlQueries")
 @Api(value = "Company", description = "APIs for working with db company")
 @RestController
 @RequestMapping(value = "/sqlQueries")
@@ -25,10 +33,7 @@ public class Controller {
         this.sqlService = sqlService;
     }
 
-    //Создание департамента. При создании департамента нужно указать информацию о департаменте, в который он
-    //будет входить. Для самого верхнего департамента такой информации указывать не нужно.
-    //инфа о департаменте, в который будет входить новый деп-нт, содержится в поле idrootDepartment
-    @Path("insert")
+    @Path("/d1/")
     @PUT
     @ApiOperation(value = "insertDeprtmnt")
     @PutMapping("/d1/")
@@ -36,115 +41,147 @@ public class Controller {
         return sqlService.createDepartment(department);
     }
 
-//		Изменение наименования департамента. В системе не может быть двух департаментов с одинаковыми наименованиями.
-    //@RequestMapping(value = "/d2/", method = RequestMethod.PUT)
+    @Path("/d2/")
+    @PUT
+    @ApiOperation(value = "updateNameDeprtmnt")
     @PutMapping("/d2/")
     public TransactionResult updateNameDeprtmnt(@RequestBody Department department){
         return sqlService.updateNameDeprtmnt(department);
     }
 
-//Удаление департамента. Удаление возможно, только если в нем нет ни одного сотрудника.
+    @Path("/d3/")
+    @DELETE
+    @ApiOperation(value = "delDeprtmnt")
     @DeleteMapping("/d3/{id}")
     public TransactionResult delDeprtmnt(@PathVariable(value = "id") long id){
         return sqlService.delDeprtmnt(id);
     }
 
-//Просмотр сведений о департаменте. Должна быть выдана информация о наименовании департамента, дате создания,
-// руководителе департамента и количестве сотрудников департамента. @RequestMapping(value = "/d4/{id}", method = RequestMethod.GET)
+    @Path("/d4/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
     @GetMapping(value = "/d4/{idDep}")
     public TransactionResult getDeprtmnt(@PathVariable(value = "idDep") long idDep){
         return sqlService.getDeprtmntInfo(idDep);
     }
-
-//Предоставление информации о департаментах, находящихся в непосредственном подчинении данного департамента (на уровень ниже).
+    @Path("/d5/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
     @GetMapping(value = "/d5/{idRoot}")
     public TransactionResult getChildDeps(@PathVariable(value = "idRoot") long idRoot){
         return sqlService.getChildDeps(idRoot);
     }
 
-//Предоставление информации о всех департаментах, находящихся в подчинении данного департамента
-// (все подчиненные департаменты. Для головного департамента - это все остальные департаменты).
-    @GetMapping(value = "/d6/{idRoot}", produces = "application/json")
+    @Path("/d6/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
+    @GetMapping(value = "/d6/{idRoot}")
     public TransactionResult getSubtreeDeps(@PathVariable(value = "idRoot") long idRoot){
         return sqlService.getSubtreeDeps(idRoot);
     }
 
-//		Перенос департамента. Задание другого департамента, куда будет входить данный департамент.
+    @Path("/d7/")
+    @PUT
+    @ApiOperation(value = "delDeprtmnt")
     @PutMapping("/d7/{idParent}/{idChild}")
     public TransactionResult transferDep(@PathVariable(value = "idChild") Long idChild,@PathVariable(value = "idParent") Long idParent){
         return sqlService.transferDep(idChild,idParent);//v, cltkfnm djpvj;yjcnm lkz null
     }
 
-//		Получение информации о всех вышестоящих департаментах данного департамента.
-    @GetMapping(value = "/d8/{idChild}", produces = "application/json")
+    @Path("/d8/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
+    @GetMapping(value = "/d8/{idChild}")
     public TransactionResult getAncestors(@PathVariable(value = "idChild") long idChild){
         return sqlService.getAncestors(idChild);
     }
 
-    //		Поиск департамента по наименованию.
-    @GetMapping(value = "/d9/{nameDep}", produces = "application/json")
+    @Path("/d9/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
+    @GetMapping(value = "/d9/{nameDep}")
     public TransactionResult getDepByName(@PathVariable(value = "nameDep") String nameDep){
         return sqlService.getDepByName(nameDep);
     }
 
-//		Получение информации о фонде заработной платы департамента (сумма зарплат всех сотрудников департамента).
+    @Path("/d10/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
     @GetMapping(value = "/d10/{idDep}")
     public TransactionResult getFondMoney(@PathVariable(value = "idDep") long idDep){
         return sqlService.getFondMoneyByDep(idDep);
     }
 
-//		Получение списка сотрудников департамента.
-    @GetMapping(value = "/d11/{idDep}", produces = "application/json")
+    @Path("/d11/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
+    @GetMapping(value = "/d11/{idDep}")
     public TransactionResult getEmployees(@PathVariable(value = "idDep") long idDep) {
         return sqlService.getEmployeesByDep(idDep);
     }
 
-//		Создание сотрудника департамента.
+    @Path("/d12/")
+    @PUT
+    @ApiOperation(value = "delDeprtmnt")
     @PutMapping("/d12/")
     public TransactionResult insertEmployee(@RequestBody Employee employee){
         return sqlService.createEmployee(employee);
     }
 
-//		Редактирование сведений о сотруднике департамента.
+    @Path("/d13/")
+    @PATCH
+    @ApiOperation(value = "delDeprtmnt")
     @PatchMapping("/d13/")
     public TransactionResult updateEmployee(@RequestBody Employee employee){
         return sqlService.changeEmployee(employee);
     }
 
-    //		Увольнение сотрудника с указанием даты увольнения.
+    @Path("/d14/")
+    @PATCH
+    @ApiOperation(value = "delDeprtmnt")
     @PatchMapping("/d14/{id}/{dateDismis}")
     public TransactionResult updateEmployee(@PathVariable(value = "id")long id,@PathVariable(value = "dateDismis")Date dateDismis){
         return sqlService.dismisEmployee(id,dateDismis);
     }
 
-//		Получение информации о сотруднике.
-    @GetMapping(value = "/d15/{id}", produces = "application/json")
+    @Path("/d15/")
+    @GET
+    @ApiOperation(value = "delDeprtmnt")
+    @GetMapping(value = "/d15/{id}")
     public TransactionResult getEmployee(@PathVariable(value = "id") long id) {
         return sqlService.getEmployee(id);
     }
 
-//	Перевод сотрудника из одного департамента в другой.
+    @Path("/d16/")
+    @PATCH
+    @ApiOperation(value = "delDeprtmnt")
     @PatchMapping("/d16/{idEmp}/{idNewDep}")
     public TransactionResult updateEmployee(@PathVariable(value = "idEmp") long idEmp,
                                   @PathVariable(value = "idNewDep")long idNewDep){
         return sqlService.transferEmployee(idEmp,idNewDep);
     }
 
-//		Перевод всех сотрудников департамента в другой департамент.
+    @Path("/d17/")
+    @PATCH
+    @ApiOperation(value = "delDeprtmnt")
     @PatchMapping("/d17/{idOldDep}/{idNewDep}")
     public TransactionResult updateEmployees(@PathVariable(value = "idOldDep") long idOldDep,
                                    @PathVariable(value = "idNewDep") long idNewDep){
         return sqlService.transferEmployees(idOldDep,idNewDep);
     }
 
-//		Получение информации о руководителе данного сотрудника.
-    @GetMapping(value = "/d18/{id}", produces = "application/json")
+    @Path("/d18/")
+    @GET
+    @ApiOperation(value = "getBoss")
+    @GetMapping(value = "/d18/{id}")
     public TransactionResult getBoss(@PathVariable(value = "id") long id) {
         return sqlService.getBossOfEmployee(id);
     }
 
-//    		Поиск сотрудников по атрибутам (по каким – решить самостоятельно).
-    @GetMapping(value = "/d19/{sex}", produces = "application/json")
+    @Path("/d19/")
+    @GET
+    @ApiOperation(value = "getContactEmpls")
+    @GetMapping(value = "/d19/{sex}")
     public TransactionResult getContactEmpls(@PathVariable(value = "sex") String sex) {
         return sqlService.getContactEmplsData(sex.toUpperCase());
     }

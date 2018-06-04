@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 @Service
 public class SQLService {
-    private Logger logger = Logger.getLogger(SQLService.class.getName());
+    private static Logger logger = Logger.getLogger(SQLService.class.getName());
     private SqlSessionFactory sqlSessionFactory;
     private CompanyDAO companyDAO;
     private DepartmentDAO deprtmntDAO;

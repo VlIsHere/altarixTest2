@@ -11,11 +11,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
+import javax.ws.rs.core.Application;
 
 @Configuration
 @EnableAutoConfiguration
 @MapperScan("com.altarix.artifacttest2.dao")
-public class DataConfig {
+public class DataConfig extends Application {
     @Autowired
     private DataSource dataSource;
 

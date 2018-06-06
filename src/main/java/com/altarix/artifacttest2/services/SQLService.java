@@ -1,13 +1,11 @@
 package com.altarix.artifacttest2.services;
 
-import com.altarix.artifacttest2.dao.CompanyDAO;
-import com.altarix.artifacttest2.dao.DepartmentDAO;
-import com.altarix.artifacttest2.dao.EmployeeDAO;
-import com.altarix.artifacttest2.dao.PositionInDeprtmntDAO;
+import com.altarix.artifacttest2.dao.*;
 import com.altarix.artifacttest2.exceptions.*;
 import com.altarix.artifacttest2.json.response.DepartmentInfo;
 import com.altarix.artifacttest2.pojo.Department;
 import com.altarix.artifacttest2.pojo.Employee;
+import com.altarix.artifacttest2.pojo.SalaryFund;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -30,6 +28,7 @@ public class SQLService {
     private CompanyDAO companyDAO;
     private DepartmentDAO deprtmntDAO;
     private EmployeeDAO employeeDAO;
+    private SalaryFundDAO salaryFundDAO;
     private PositionInDeprtmntDAO positionInDeprtmntDAO;
 	private Reader reader;
 	private SqlSession session;
@@ -42,7 +41,9 @@ public class SQLService {
             deprtmntDAO = session.getMapper(DepartmentDAO.class);
             employeeDAO = session.getMapper(EmployeeDAO.class);
             companyDAO = session.getMapper(CompanyDAO.class);
+            salaryFundDAO = session.getMapper(SalaryFundDAO.class);
             positionInDeprtmntDAO = session.getMapper(PositionInDeprtmntDAO.class);
+            checkFundDeps();
         } catch (IOException e) {
             logger.log(Level.SEVERE, null, e);
         }
@@ -478,4 +479,41 @@ public class SQLService {
         return childs;
     }
 
+    /**
+     * R1) Необходимо реализовать метод, работающий по расписанию, и сохраняющий в отдельную таблицу информацию о
+     * фонде заработной платы каждого департамента. Метод должен запускаться каждые 5 минут. При удалении
+     * какого-либо департамента из системы, должна также удаляться информация о департаменте и из этой таблицы.
+     *
+     * R2) При создании департамента, его переименовании или перемещении, необходимо записывать
+     * информацию об этих событиях в отдельной таблице.
+     */
+    private void checkFundDeps(){
+        new Thread(() -> {
+            try {
+                ArrayList<Long> idDeps = null;
+                long tmp;
+                Long money;
+                SalaryFund sf = null;
+                while (true) {
+                    idDeps = deprtmntDAO.getAllIds();
+                    for (int i = 0; i < idDeps.size(); i++) {
+                        tmp = idDeps.get(i);
+                        employeeDAO.getFondMoney(tmp);
+                        money = employeeDAO.getFondMoney(tmp);
+                        money = money==null?0:money;
+                        sf = new SalaryFund(tmp,money);
+                        if (salaryFundDAO.getByID(tmp)==null) {
+                            salaryFundDAO.insert(sf);
+                        }else {
+                            salaryFundDAO.update(tmp,sf);
+                        }
+                    }
+                    session.commit();
+                    Thread.sleep(300_000);//5min = 300 000
+                }
+            } catch (InterruptedException | PersistenceException e) {
+                logger.log(Level.SEVERE, null, e);
+            }
+        }).start();
+    }
 }

@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.altarix.artifacttest2.dao.SalaryFundDAO">
+
+    <resultMap id="salaryFund" type="SalaryFund">
+        <id property="idDepartment" column="iddepartment"/>
+        <result property="fundOfDep" column="fundofdep"/>
+    </resultMap>
+    <select resultMap="salaryFund" id="getAll">select * from salaryfund</select>
+
+    <select resultMap="salaryFund" id="getByID" parameterType="long" >
+            select * from salaryfund where iddepartment = #{id}
+    </select>
+
+    <insert id="insert" parameterType="SalaryFund">
+        insert into salaryfund(iddepartment,fundofdep) values (#{salaryFund.id}, #{salaryFund.fundOfDep});
+    </insert>
+
+    <update id="update" parameterType="SalaryFund">
+        update salaryfund set iddepartment = #{salaryFund.id}, fundofdep = #{salaryFund.fundOfDep}
+            where iddepartment = #{idOld}
+    </update>
+
+    <delete id="delete" parameterType="long">delete from salaryfund where iddepartment = #{id}</delete>
+
+    <delete id="deleteAll">delete from salaryfund</delete>
+</mapper>

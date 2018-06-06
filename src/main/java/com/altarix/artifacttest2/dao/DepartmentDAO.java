@@ -15,5 +15,9 @@ public interface DepartmentDAO extends DAO {
 
     ArrayList<Department> getChilds(@Param("idRoot") long idRoot);
 
+    ArrayList<Long> getAllIds();
+
     Department getByName(@Param("nameDep") String nameDep);
+
+    long getCntDeps();
 }

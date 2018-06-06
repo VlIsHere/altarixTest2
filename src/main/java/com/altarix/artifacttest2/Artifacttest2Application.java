@@ -7,7 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@MappedTypes({Company.class,Department.class,Employee.class,PositionInDeprtmnt.class,Domain.class})
+@MappedTypes({Company.class,Department.class,Employee.class,PositionInDeprtmnt.class,Domain.class,SalaryFund.class})
 @MapperScan("com.altarix.artifacttest2.dao")
 @SpringBootApplication
 @ComponentScan(value = "com.altarix.artifacttest2")

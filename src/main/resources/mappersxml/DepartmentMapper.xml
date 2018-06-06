@@ -24,6 +24,10 @@
         select * from department where namedepartment = #{nameDep};
     </select>
 
+    <select id="getCntDeps" resultType="long">select COUNT(iddepartment) from department</select>
+
+    <select id="getAllIds" resultType="long">select iddepartment from department</select>
+
     <insert id="insert" parameterType="Department">
         insert into department(iddepartment, idcompany, dateofcreating, namedepartment, idrootdepartment) values (#{department.id},#{department.idCompany},#{department.dateOfCreating},#{department.nameDepartment},#{department.idRootDepartment});
     </insert>

@@ -6,10 +6,11 @@
         <!--<typeAlias alias="CompanyDAO" type="com.altarix.artifacttest2.daopanyMapper"/>-->
     <!--</typeAliases>-->
     <typeAliases>
-    <typeAlias type="com.altarix.artifacttest2.pojo.Company" alias="Company"/>
-    <typeAlias type="com.altarix.artifacttest2.pojo.Department" alias="Department"/>
-    <typeAlias type="com.altarix.artifacttest2.pojo.Employee" alias="Employee"/>
-    <typeAlias type="com.altarix.artifacttest2.pojo.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
+        <typeAlias type="com.altarix.artifacttest2.pojo.Company" alias="Company"/>
+        <typeAlias type="com.altarix.artifacttest2.pojo.Department" alias="Department"/>
+        <typeAlias type="com.altarix.artifacttest2.pojo.Employee" alias="Employee"/>
+        <typeAlias type="com.altarix.artifacttest2.pojo.PositionInDeprtmnt" alias="PositionInDeprtmnt"/>
+        <typeAlias type="com.altarix.artifacttest2.pojo.SalaryFund" alias="SalaryFund"/>
     </typeAliases>
 
     <environments default="development">
@@ -36,5 +37,6 @@
             <mapper resource="mappersxml/DepartmentMapper.xml"/>
             <mapper resource="mappersxml/EmployeeMapper.xml"/>
             <mapper resource="mappersxml/PositionInDeprtmntMapper.xml"/>
+            <mapper resource="mappersxml/SalaryFundMapper.xml"/>
     </mappers>
 </configuration>
